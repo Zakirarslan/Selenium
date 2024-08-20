@@ -30,12 +30,12 @@ public abstract class TestBase {
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
         driver.manage().window().maximize();
     }
-    @AfterEach
-    public void tearDown() throws InterruptedException {
+  // @AfterEach
+  // public void tearDown() throws InterruptedException {
 
-        Thread.sleep(2000);
-      driver.quit();
-    }
+  //     Thread.sleep(2000);
+  //   driver.quit();
+  // }
     //DROPDOWN
 //    Create a method that select an option from a dropdown index
     public static void dropdownSelectByIndex(WebElement dropdownElement, int index){
