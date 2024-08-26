@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Q02_AddRemoveList extends TestBase {
     @Test
-    public void test() throws InterruptedException {
+    public void test02() throws InterruptedException {
       //Given
       //    Go to http://the-internet.herokuapp.com/add_remove_elements/
 

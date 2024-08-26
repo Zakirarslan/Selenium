@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class Q01_FacebookCreateAccount extends TestBase {
     @Test
-    public void test() throws InterruptedException {
+    public void test01() throws InterruptedException {
 
         //    Navigate to Go to https://www.facebook.com/
 
