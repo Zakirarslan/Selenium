@@ -31,10 +31,23 @@ public class Day12_ExplicitWait extends TestBase {
 
         Assertions.assertTrue(helloText.isDisplayed());
 
+    }
+    @Test
+    public void explicitWaitTestReusable() throws InterruptedException {
+        //Create a class:ExplicitWait
+        //Create a method: explicitWait
+        //Go to https://the-internet.herokuapp.com/dynamic_loading/1
+        driver.get("https://the-internet.herokuapp.com/dynamic_loading/1");
+        //When user clicks on the Start button
 
+        WebElement startButton = driver.findElement(By.xpath("//button[text()='Start']"));
+        waitForClickablility(startButton, 10);
+        startButton.click();
 
+        WebElement helloText = driver.findElement(By.xpath("//div[@id='finish']"));
+        waitForVisibility(helloText, 10);
+        //Then verify the 'Hello World!' Shows up on the screen
 
-
-
+        Assertions.assertTrue(helloText.isDisplayed());
     }
 }
