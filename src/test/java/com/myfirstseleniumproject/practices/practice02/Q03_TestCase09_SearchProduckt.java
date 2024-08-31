@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
+
 public class Q03_TestCase09_SearchProduckt extends TestBase {
     @Test
     public void testCase09(){
@@ -23,7 +25,9 @@ public class Q03_TestCase09_SearchProduckt extends TestBase {
         Assertions.assertTrue(home.getText().contains("Home"));
 
         //4. Click on 'Products' button
-        driver.findElement(By.partialLinkText("Products")).click();
+        //driver.findElement(By.partialLinkText("Products")).click();
+        WebElement products=driver.findElement(By.xpath("//a[@href='/products']"));
+        clickByJS(products);
 
       //5. Verify user is navigated to ALL PRODUCTS page successfully
         Assertions.assertTrue(driver.findElement(By.xpath("//h2[text()='All Products']")).isDisplayed());
@@ -37,7 +41,17 @@ public class Q03_TestCase09_SearchProduckt extends TestBase {
        WebElement searchButton=driver.findElement(By.xpath("//button[@id='submit_search']"));
        searchButton.click();
        Assertions.assertTrue(driver.findElement(By.xpath("//h2[text()='Searched Products']")).isDisplayed());
+
       //8. Verify all the products related to search are visible
+
+       List<WebElement> productList=driver.findElements(By.xpath("//div[@class='features_items']/div[@class='col-sm-4']"));
+
+        //div[@class='productinfo text-center']//p
+        for (WebElement each:productList){
+            System.out.println(each.getText());
+            System.out.println("===========");
+        }
+        Assertions.assertTrue(productList.size()>0,"No products ");
 
 
     }
