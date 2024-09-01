@@ -17,7 +17,7 @@ public class Q03_TestCase09_SearchProduckt extends TestBase {
         driver.get("http://automationexercise.com");
 
       //3. Verify that home page is visible successfully
-        try {driver.findElement(By.xpath("//p[contains(text(),'Einwilligen')]")).click();
+        try {driver.findElement(By.xpath("//p[contains(text(),'Consent')]")).click();
         }catch(Exception e) {
             System.out.println("Consent pop-up not found or already handled");}
 
@@ -39,7 +39,7 @@ public class Q03_TestCase09_SearchProduckt extends TestBase {
       //7. Verify 'SEARCHED PRODUCTS' is visible
 
        WebElement searchButton=driver.findElement(By.xpath("//button[@id='submit_search']"));
-       searchButton.click();
+       clickByJS(searchButton);
        Assertions.assertTrue(driver.findElement(By.xpath("//h2[text()='Searched Products']")).isDisplayed());
 
       //8. Verify all the products related to search are visible
@@ -48,8 +48,9 @@ public class Q03_TestCase09_SearchProduckt extends TestBase {
 
         //div[@class='productinfo text-center']//p
         for (WebElement each:productList){
-            System.out.println(each.getText());
-            System.out.println("===========");
+            Assertions.assertTrue(each.isDisplayed());
+
+
         }
         Assertions.assertTrue(productList.size()>0,"No products ");
 

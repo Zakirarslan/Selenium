@@ -1,9 +1,11 @@
 package com.myfirstseleniumproject.utilities;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -23,9 +25,26 @@ public abstract class TestBase {
     protected static WebDriver driver;
 
 
+
     @BeforeEach
     public void setUp(){
-        driver = new EdgeDriver();
+
+        ChromeOptions options =new ChromeOptions();
+        options.addArguments("--lang=en");
+        options.addArguments("--disable-notifications");
+        options.addArguments("--disable-popup-blocking");
+        options.addArguments("--disable-infobars");
+        options.addArguments("--start-maximized");
+        options.addArguments("--no-default-browser-check");
+        options.addArguments("--no-first-run");
+//
+        options.addArguments("--disable-search-engine-choice-screen");
+        //options.addArguments("user-data-dir=/path/to/your/custom/profile");
+        //WebDriver driver = new ChromeDriver(options);
+
+
+        driver = new ChromeDriver(options);
+        //driver = new EdgeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
         driver.manage().window().maximize();
