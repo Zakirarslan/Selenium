@@ -22,7 +22,7 @@ public class Q08_ContactUsForm extends TestBase {
         driver.get("http://www.automationexercise.com");
         // WebElement consent=driver.findElement(By.xpath("//p[contains(text(), 'Consent')])"));
 
-        try {driver.findElement(By.xpath("//p[contains(text(),'Einwilligen')]")).click();
+        try {driver.findElement(By.xpath("//p[contains(text(),'Consent')]")).click();
         }catch(Exception e) {System.out.println("Consent pop-up not found or already handled");}
 
         //3. Click on 'Contact Us' button

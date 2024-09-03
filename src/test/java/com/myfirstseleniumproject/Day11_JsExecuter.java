@@ -26,7 +26,7 @@ public class Day11_JsExecuter extends TestBase {
         //Given user is on the https://www.amazon.com/
         //1. create objects from actions class
         Actions actions = new Actions(driver);
-        driver.get("https://www.amazon.com");
+        driver.get("https://www.amazon.com.tr");
         Thread.sleep(1000);
 
         driver.navigate().refresh();

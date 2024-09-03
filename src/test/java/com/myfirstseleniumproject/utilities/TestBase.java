@@ -1,7 +1,13 @@
 package com.myfirstseleniumproject.utilities;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,8 +22,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -45,19 +55,61 @@ public abstract class TestBase {
 
         driver = new ChromeDriver(options);
         //driver = new EdgeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
         driver.manage().window().maximize();
 
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-        driver.manage().window().maximize();
+       //driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+       //driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
+       //driver.manage().window().maximize();
     }
-    @AfterEach
-    public void tearDown()  {
 
-        //driver.quit();
+   /*
+Create 3 extent reports objects:
+ExtentReports (create report),
+ExtentHTMLReporter (generate html template),
+ExtentTest (log test steps. Only this will be used in test classes)
+ */
+
+    protected static ExtentReports extentReports;
+    protected static ExtentHtmlReporter extentHtmlReporter;
+    protected static ExtentTest extentTest;
+
+//Create BeforeAll for extent report pre requirement
+//Create AfterAll for generation the reports using flush
+
+    @BeforeAll
+    public static void setExtentReports() {
+        String now = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+        String reportPath = System.getProperty("user.dir") + "/test-output/Reports/" + now + "extent-reports.html";
+
+        extentReports = new ExtentReports();
+        extentHtmlReporter = new ExtentHtmlReporter(reportPath);
+
+        //******OPTIONAL: ADD CUSTOM SYSTEM INFORMATION USING EXTENTREPORTS*****
+        extentReports.setSystemInfo("Project Name", "Payment Division");
+        extentReports.setSystemInfo("Browser", "Chrome");
+        extentReports.setSystemInfo("Team Name", "Deutsch");
+        extentReports.setSystemInfo("SQA", "Smitha");
+        extentReports.setSystemInfo("Environment", "UAT");
+
+        //*****OPTIONAL: ADD DOCUMENT INFORMATION USING EXTENTHTMLREPORTER*****
+        extentHtmlReporter.config().setReportName("My UAT Report");
+        extentHtmlReporter.config().setDocumentTitle("My Extent Report");
+
+        //attached extent report and html reporter
+        extentReports.attachReporter(extentHtmlReporter);
+
+        //CREATE EXTENT TEST REPORT
+        extentTest = extentReports.createTest("My first test case", "Team Deutsch test cases");
+    }
+
+    @AfterAll
+    public static void flushExtentReports() {
+
+        //required for generating the report
+        extentReports.flush();
     }
     //DROPDOWN
 //    Create a method that select an option from a dropdown index
@@ -357,6 +409,60 @@ public abstract class TestBase {
             System.out.println("Upload is completed...");
         }catch (Exception e){
         }
+    }
+    //        SCREENSHOTS : capture the screenshot of entire page
+    public void captureScreenshotEntirePage() {
+//        1. getScreenShotAs method to capture the screenshot
+        File image = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+//        2. save the image in a path with a dynamic name
+        String now = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+        String filePath = System.getProperty("user.dir") + "/test-output/Screenshot/" + now + "image.jpeg";
+//        3. save the image in the path
+        try {
+            FileUtils.copyFile(image, new File(filePath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    //        SCREENSHOTS : capture the screenshot of the given WEB ELEMENT . Ex: captureScreenshotOfElement(logoElement)
+    public void captureScreenshotOfElement(WebElement element) {
+        //        1. getScreenShotAs method to capture the screenshot
+        File image = element.getScreenshotAs(OutputType.FILE);
+//        2. save the image in a path with a dynamic name
+        String now = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+        String filePath = System.getProperty("user.dir") + "/test-output/ElementsScreenshot/" + now + "image.png";
+//        3. save the image in the path
+        try {
+            FileUtils.copyFile(image, new File(filePath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    //        SCREENSHOTS : capture the screenshot of the given WEB ELEMENT . Ex: captureScreenshotOfElement(logoElement)
+    public static String captureScreenshotEntirePageAsString() {
+        //        1. getScreenShotAs method to capture the screenshot
+        File image = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        //        2. save the image in a path with a dynamic name
+        String now = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+        String filePath = System.getProperty("user.dir") + "/test-output/Reports/" + now + "image.png";
+        //        3. save the image in the path
+        try {
+            FileUtils.copyFile(image, new File(filePath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //       4. return the path of the image as string. (THIS WILL BE USED TO ATTACH IN THE EXTENT REPORTS)
+        return new File(filePath).getAbsolutePath();
+    }
+
+
+    //    Accept a URL and navigates to that page
+    public static void openURL(String url) {
+        driver.get(url);
     }
 
 
