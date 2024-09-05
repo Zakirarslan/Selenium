@@ -55,8 +55,8 @@ public abstract class TestBase {
 
         driver = new ChromeDriver(options);
         //driver = new EdgeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
+       //driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+       //driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
         driver.manage().window().maximize();
 
 
